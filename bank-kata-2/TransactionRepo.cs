@@ -44,22 +44,4 @@ namespace bank_kata_2
             return result;
         }
     }
-
-    public class DepositTransaction : Transaction, ITransaction
-    {
-        public DepositTransaction(int amount, string todayToString):base(amount, todayToString)
-        {
-        }
-
-        public override int ChangeToClosingBalance => Amount;
-    }
-
-    public class WithdrawalTransaction : Transaction, ITransaction
-    {
-        public WithdrawalTransaction(int amount, string todayToString) : base(amount, todayToString)
-        {
-        }
-
-        public override int ChangeToClosingBalance => -Amount;
-    }
 }
