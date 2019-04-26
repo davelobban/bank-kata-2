@@ -15,9 +15,10 @@ namespace bank_kata_2
             _transactionRepo.Add(deposit);
         }
 
-        public void Withdraw(int i)
+        public void Withdraw(int amount)
         {
-            throw new System.NotImplementedException();
+            var withdrawal = new Transaction(amount);
+            _transactionRepo.Add(withdrawal);
         }
 
         public void PrintStatement()
