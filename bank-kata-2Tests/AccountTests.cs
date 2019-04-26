@@ -11,17 +11,18 @@ namespace Tests
         {
         }
 
-        [Test]
-        public void Deposit_100Deposited_TransactionShowsInRepo()
+        [TestCase(100)]
+        [TestCase(200)]
+        public void Deposit_AmountDeposited_TransactionShowsInRepo(int amount)
         {
 
             var transactionRepo= new TransactionRepo();
             var transactions = transactionRepo.GetAll();
             var subject = new Account(transactionRepo);
-            subject.Deposit(100);
+            subject.Deposit(amount);
             Assert.AreEqual(1, transactions.Count);
             var actual = transactions[0].Amount;
-            Assert.AreEqual(100, actual);
+            Assert.AreEqual(amount, actual);
         }
     }
 }
