@@ -3,10 +3,12 @@ namespace bank_kata_2
     public class Account
     {
         private TransactionRepo _transactionRepo;
+        private IConsole _console;
 
-        public Account(TransactionRepo transactionRepo)
+        public Account(TransactionRepo transactionRepo, IConsole console)
         {
             _transactionRepo = transactionRepo;
+            _console = console;
         }
 
         public void Deposit(int amount)
@@ -21,7 +23,14 @@ namespace bank_kata_2
 
         public void PrintStatement()
         {
-            throw new System.NotImplementedException();
+            _console.WriteLine("Date       || Amount || Balance");
+            var transactionStatementLines = _transactionRepo.GetStatementTransactions();
+            transactionStatementLines.Reverse();
+            foreach (var line in transactionStatementLines)
+            {
+                var formatted = $"{line.Date} || {line.ChangeToClosingBalance} || {line.ClosingBalance}";
+                _console.WriteLine(formatted);
+            }
         }
     }
 }

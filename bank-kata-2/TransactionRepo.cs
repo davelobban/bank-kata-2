@@ -39,7 +39,7 @@ namespace bank_kata_2
             transactions.ForEach(t =>
             {
                 closingBalance += t.ChangeToClosingBalance;
-                result.Add(new StatementTransaction(t.Amount, t.Date, closingBalance));
+                result.Add(new StatementTransaction(t.Amount, t.Date, closingBalance, t.ChangeToClosingBalance));
             });
             return result;
         }

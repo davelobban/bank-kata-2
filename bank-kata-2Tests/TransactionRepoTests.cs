@@ -17,18 +17,26 @@ namespace Tests
         [TestCase(200, "02/02/2010")]
         public void Deposit_AmountDeposited_TransactionShowsInRepo(int amount, string transactionDate)
         {
+
             var mockDateProvider = new Mock<IDateProvider>();
             mockDateProvider.Setup(m => m.TodayToString()).Returns(transactionDate);
            var transactionRepo= new TransactionRepo(mockDateProvider.Object);
 
-            var subject = new Account(transactionRepo);
-            subject.Deposit(amount);
+           var subject = GetTestSubject(transactionRepo);
+           subject.Deposit(amount);
             var transactions = transactionRepo.GetAll();
             Assert.AreEqual(1, transactions.Count);
             var actual = transactions[0].Amount;
             Assert.AreEqual(amount, actual);
             var actualDate = transactions[0].Date;
             Assert.AreEqual(transactionDate, actualDate);
+        }
+
+        private static Account GetTestSubject(TransactionRepo transactionRepo)
+        {
+            var mockConsole = new Mock<IConsole>();
+            var subject = new Account(transactionRepo, mockConsole.Object);
+            return subject;
         }
 
 
@@ -41,7 +49,7 @@ namespace Tests
             mockDateProvider.Setup(m => m.TodayToString()).Returns(transactionDate);
             var transactionRepo = new TransactionRepo(mockDateProvider.Object);
 
-            var subject = new Account(transactionRepo);
+            var subject = GetTestSubject(transactionRepo);
             subject.Withdraw(amount);
             var transactions = transactionRepo.GetAll();
             Assert.AreEqual(1, transactions.Count);
@@ -54,9 +62,7 @@ namespace Tests
         [Test]
         public void GetStatementTransactions_ThreeTransactions_TransactionsShowInResult()
         {
-            var transactionDate1 = "10/01/2012";
-            var transactionDate2 = "13/01/2012";
-            var transactionDate3 = "14/01/2012";
+
             var amount1 = 1000;
             var amount2 = 2000;
             var amount3 = 500;
@@ -65,14 +71,10 @@ namespace Tests
             var closingBalance3 = 2500;
 
 
-            var mockDateProvider = new Mock<IDateProvider>();
-            mockDateProvider.SetupSequence(m => m.TodayToString())
-                .Returns(transactionDate1)
-                .Returns(transactionDate2)
-                .Returns(transactionDate3);
+            var mockDateProvider = GetMockDateProviderWithDatesForAcceptanceTestScenario(out var transactionDate1, out var transactionDate2, out var transactionDate3);
             var transactionRepo = new TransactionRepo(mockDateProvider.Object);
 
-            var subject = new Account(transactionRepo);
+            var subject = GetTestSubject(transactionRepo);
             subject.Deposit(amount1);
             subject.Deposit(amount2);
             subject.Withdraw(amount3);
@@ -94,5 +96,18 @@ namespace Tests
 
         }
 
+        internal static Mock<IDateProvider> GetMockDateProviderWithDatesForAcceptanceTestScenario(out string transactionDate1,
+            out string transactionDate2, out string transactionDate3)
+        {
+            var mockDateProvider = new Mock<IDateProvider>();
+            transactionDate1 = "10/01/2012";
+            transactionDate2 = "13/01/2012";
+            transactionDate3 = "14/01/2012";
+            mockDateProvider.SetupSequence(m => m.TodayToString())
+                .Returns(transactionDate1)
+                .Returns(transactionDate2)
+                .Returns(transactionDate3);
+            return mockDateProvider;
+        }
     }
     }
