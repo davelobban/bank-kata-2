@@ -4,5 +4,6 @@
     {
         int Amount { get; }
         string Date { get; }
+        int ChangeToClosingBalance { get; }
     }
 }

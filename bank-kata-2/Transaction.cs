@@ -4,7 +4,7 @@ using System.Text;
 
 namespace bank_kata_2
 {
-    public class Transaction : ITransaction
+    public abstract class Transaction : ITransaction
     {
         public Transaction(int amount, string transactionDate)
         {
@@ -14,5 +14,6 @@ namespace bank_kata_2
 
         public int Amount { get; }
         public string Date { get; }
+        public abstract int ChangeToClosingBalance { get; }
     }
 }

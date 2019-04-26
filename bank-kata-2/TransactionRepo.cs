@@ -21,13 +21,13 @@ namespace bank_kata_2
 
         public void AddDeposit(int amount)
         {
-            var deposit = new Transaction(amount, _dateProvider.TodayToString());
+            var deposit = new DepositTransaction(amount, _dateProvider.TodayToString());
             _transactions.Add(deposit);
         }
 
         public void AddWithdrawal(int amount)
         {
-            var deposit = new Transaction(amount, _dateProvider.TodayToString());
+            var deposit = new WithdrawalTransaction(amount, _dateProvider.TodayToString());
             _transactions.Add(deposit);
         }
 
@@ -38,10 +38,28 @@ namespace bank_kata_2
             var transactions = GetAll();
             transactions.ForEach(t =>
             {
-                closingBalance += t.Amount;
+                closingBalance += t.ChangeToClosingBalance;
                 result.Add(new StatementTransaction(t.Amount, t.Date, closingBalance));
             });
             return result;
         }
+    }
+
+    public class DepositTransaction : Transaction, ITransaction
+    {
+        public DepositTransaction(int amount, string todayToString):base(amount, todayToString)
+        {
+        }
+
+        public override int ChangeToClosingBalance => Amount;
+    }
+
+    public class WithdrawalTransaction : Transaction, ITransaction
+    {
+        public WithdrawalTransaction(int amount, string todayToString) : base(amount, todayToString)
+        {
+        }
+
+        public override int ChangeToClosingBalance => -Amount;
     }
 }

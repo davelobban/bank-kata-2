@@ -1,3 +1,5 @@
+using System;
+
 namespace bank_kata_2
 {
     internal class StatementTransaction : Transaction, IStatementTransaction
@@ -9,5 +11,10 @@ namespace bank_kata_2
         }
 
         public int ClosingBalance { get; }
+
+        public override int ChangeToClosingBalance
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 }
