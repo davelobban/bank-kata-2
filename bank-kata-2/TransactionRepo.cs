@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 namespace bank_kata_2
 {
@@ -28,6 +29,19 @@ namespace bank_kata_2
         {
             var deposit = new Transaction(amount, _dateProvider.TodayToString());
             _transactions.Add(deposit);
+        }
+
+        public List<IStatementTransaction> GetStatementTransactions()
+        {
+            var result = new List<IStatementTransaction>();
+            var closingBalance = 0;
+            var transactions = GetAll();
+            transactions.ForEach(t =>
+            {
+                closingBalance += t.Amount;
+                result.Add(new StatementTransaction(t.Amount, t.Date, closingBalance));
+            });
+            return result;
         }
     }
 }
