@@ -3,5 +3,6 @@
     public interface ITransaction
     {
         int Amount { get; }
+        string Date { get; }
     }
 }

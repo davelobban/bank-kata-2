@@ -15,7 +15,8 @@ namespace Tests
         public void AcceptanceTest_PrintsStatement()
         {
             var mockConsole = new Mock<IConsole>();
-            var transactionRepo = new TransactionRepo();
+            var mockDateProvider= new Mock<IDateProvider>();
+            var transactionRepo = new TransactionRepo(mockDateProvider.Object);
             var account = new Account(transactionRepo);
             account.Deposit(1000);
             account.Deposit(2000);

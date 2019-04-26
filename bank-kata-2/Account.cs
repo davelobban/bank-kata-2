@@ -11,14 +11,12 @@ namespace bank_kata_2
 
         public void Deposit(int amount)
         {
-            var deposit= new Transaction(amount);
-            _transactionRepo.Add(deposit);
+            _transactionRepo.AddDeposit(amount);
         }
 
         public void Withdraw(int amount)
         {
-            var withdrawal = new Transaction(amount);
-            _transactionRepo.Add(withdrawal);
+            _transactionRepo.AddWithdrawal(amount);
         }
 
         public void PrintStatement()
