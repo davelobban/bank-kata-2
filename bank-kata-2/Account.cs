@@ -2,9 +2,17 @@ namespace bank_kata_2
 {
     public class Account
     {
-        public void Deposit(int p0)
+        private TransactionRepo _transactionRepo;
+
+        public Account(TransactionRepo transactionRepo)
         {
-            throw new System.NotImplementedException();
+            _transactionRepo = transactionRepo;
+        }
+
+        public void Deposit(int amount)
+        {
+            var deposit= new Transaction(amount);
+            _transactionRepo.Add(deposit);
         }
 
         public void Withdraw(int i)
